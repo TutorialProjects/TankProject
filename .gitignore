@@ -1,0 +1,12 @@
+*/Build/
+*/Binaries
+*/DerivedDataCache
+*/Saved
+Tank_Project/Intermediate/Build/
+Tank_Project/Content/StarterContent/
+Tank_Project/Intermediate/Config/
+*.VC.db
+Tank_Project/Intermediate/
+*.sdf
+*.suo
+Tank_Project/Content/BattleGrounds.umap
