@@ -18,5 +18,15 @@ public:
 	ATankPawn* GetControlledTank() const;
 	virtual void BeginPlay() override;
 	void AimTowardsCrosshair();
+	bool GetSightRayHitLocation(FVector &) const;
+	bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& outLookDirection) const;
+	bool GetLookVectorHitLocation(FVector Direction, FVector &outHitLocation) const;
+
+	UPROPERTY(EditAnywhere)
+	float CrossHairXLocation = 0.5f;
+	UPROPERTY(EditAnywhere)
+	float CrossHairYLocation = 0.5f;
+	UPROPERTY(EditAnywhere)
+	float LineTraceRange = 500000.f;
 	
 };

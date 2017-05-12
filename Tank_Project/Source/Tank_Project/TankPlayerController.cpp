@@ -2,7 +2,7 @@
 
 #include "Tank_Project.h"
 #include "TankPlayerController.h"
-
+#define OUT
 
 
 
@@ -31,5 +31,53 @@ void ATankPlayerController::Tick(float DeltaTime) {
  void ATankPlayerController::AimTowardsCrosshair() {
 
 	 if (!GetControlledTank()) { return; }
+
+	 FVector HitLocation;
+	 if (GetSightRayHitLocation(HitLocation)) {
+		 UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString())
+	 }
+
+
 	 return;
+ }
+
+ bool ATankPlayerController::GetSightRayHitLocation(FVector &outHitLocation) const{
+	 // get player forward vector
+	 //GetWorld()->GetFirstPlayerController()->GetPawn();
+	 int32 ViewportSizeX, ViewportSizeY; /*=*/
+	 /*OUT*/ GetViewportSize(ViewportSizeX, ViewportSizeY);
+
+	 FVector2D ScreenLocation((ViewportSizeX*CrossHairXLocation), (ViewportSizeY*CrossHairYLocation));
+	 FVector LookDirection; /*=*/
+	 if (GetLookDirection(ScreenLocation, LookDirection))
+		{
+			GetLookVectorHitLocation(LookDirection, outHitLocation);
+		};
+	 
+	// UE_LOG(LogTemp, Warning, TEXT("WorldDirection: %s"), *LookDirection.ToString());
+	 //line trace by channel
+	 // if hit, set outlocation to the hitcomponent.location, then return true
+	 // if HitResult.HitComponent == false, do nothing and return false
+	 return true;
+ }
+ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation,FVector &outLookDirection) const{
+	 FVector WorldCameraLocation; //to be discarded
+	 return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldCameraLocation, outLookDirection);
+ }
+
+ bool ATankPlayerController::GetLookVectorHitLocation(FVector Direction, FVector &outHitLocation) const{
+	 FHitResult HitResult;
+	 auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	 auto EndLocation = StartLocation + (Direction*LineTraceRange);
+	 if (GetWorld()->LineTraceSingleByChannel(
+		 HitResult,
+		 StartLocation,
+		 EndLocation,
+		 ECollisionChannel::ECC_Visibility))
+	 {
+		 outHitLocation = HitResult.Location;
+		 return true;
+	 }
+	 outHitLocation = FVector(0.f); //<- just in case u forget to check
+	 return false;
  }
