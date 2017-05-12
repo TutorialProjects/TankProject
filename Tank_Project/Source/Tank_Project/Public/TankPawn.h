@@ -13,6 +13,7 @@ class TANK_PROJECT_API ATankPawn : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATankPawn();
+	void AimAt(FVector HitLocation);
 
 protected:
 	// Called when the game starts or when spawned
@@ -28,3 +29,4 @@ public:
 	
 	
 };
+

@@ -33,3 +33,7 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void ATankPawn::AimAt(FVector HitLocation) {
+
+	return;
+}

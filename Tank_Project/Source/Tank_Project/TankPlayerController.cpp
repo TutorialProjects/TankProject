@@ -34,7 +34,11 @@ void ATankPlayerController::Tick(float DeltaTime) {
 
 	 FVector HitLocation;
 	 if (GetSightRayHitLocation(HitLocation)) {
-		 UE_LOG(LogTemp, Warning, TEXT("Hit Location: %s"), *HitLocation.ToString())
+		 GetControlledTank()->AimAt(HitLocation);
+		 FVector CurrentLocation = PlayerCameraManager->GetCameraLocation();
+		 FVector Difference = HitLocation - CurrentLocation;
+		 float MetersAway = Difference.Size()/100;
+		 UE_LOG(LogTemp, Warning, TEXT("Meters Away: %f"), MetersAway)
 	 }
 
 
