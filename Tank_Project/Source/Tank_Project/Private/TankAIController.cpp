@@ -18,22 +18,24 @@ void ATankAIController::BeginPlay() {
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("AI Pawn Not Found."))
 	}
+	
 	ATankPawn* PlayerTank = GetPlayerTank();
 	if (PlayerTank) {
-		UE_LOG(LogTemp, Warning, TEXT("I found you, %s"), *(PlayerTank->GetName()))
+		UE_LOG(LogTemp, Warning, TEXT("TankAi controller detected player tank: %s"), *(PlayerTank->GetName()))
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("Well, Double Fuck."))
+		UE_LOG(LogTemp, Warning, TEXT("TankAi Controller couldn't find a player tank in the level."))
 	}
-	/*
+	
+	
 	auto ControlledTank = GetControlledPawn();
 	if (ControlledTank) {
-		UE_LOG(LogTemp, Warning, TEXT("AI Pawn Name: %s"), *(ControlledTank->GetName()))
+		//UE_LOG(LogTemp, Warning, TEXT("AI Pawn Name: %s"), *(ControlledTank->GetName()))
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("AI Pawn is not possesing any type of pawn."))
+		//UE_LOG(LogTemp, Warning, TEXT("AI Pawn is not possesing any type of pawn."))
 	}
-*/
+
 }
 
 ATankPawn* ATankAIController::GetPlayerTank() const {

@@ -38,7 +38,7 @@ void ATankPlayerController::Tick(float DeltaTime) {
 		 FVector CurrentLocation = PlayerCameraManager->GetCameraLocation();
 		 FVector Difference = HitLocation - CurrentLocation;
 		 float MetersAway = Difference.Size()/100;
-		 UE_LOG(LogTemp, Warning, TEXT("Meters Away: %f"), MetersAway)
+	//	 UE_LOG(LogTemp, Warning, TEXT("Meters Away: %f"), MetersAway)
 	 }
 
 
