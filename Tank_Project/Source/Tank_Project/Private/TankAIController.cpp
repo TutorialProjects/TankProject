@@ -4,9 +4,9 @@
 #include "Public/TankAIController.h"
 
 
-APawn* ATankAIController::GetControlledPawn() const {
+ATankPawn* ATankAIController::GetControlledTankPawn() const {
 
-	return Cast<APawn>(GetPawn());
+	return Cast<ATankPawn>(GetPawn());
 }
 
 
@@ -21,10 +21,10 @@ void ATankAIController::BeginPlay() {
 	
 	ATankPawn* PlayerTank = GetPlayerTank();
 	if (PlayerTank) {
-		UE_LOG(LogTemp, Warning, TEXT("TankAi controller detected player tank: %s"), *(PlayerTank->GetName()))
+		//UE_LOG(LogTemp, Warning, TEXT("TankAi controller detected player tank: %s"), *(PlayerTank->GetName()))
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("TankAi Controller couldn't find a player tank in the level."))
+		//UE_LOG(LogTemp, Warning, TEXT("TankAi Controller couldn't find a player tank in the level."))
 	}
 	
 	
@@ -45,3 +45,22 @@ ATankPawn* ATankAIController::GetPlayerTank() const {
 
 }
 
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (GetControlledTankPawn() && GetPlayerTank())
+	{
+		GetControlledTankPawn()->AimAt(GetPlayerTank()->GetActorLocation());
+	}
+
+	/* // this was included as a debug
+	if (Super::GetPawn()) {
+		UE_LOG(LogTemp, Warning, TEXT("AI Pawn Name: %s"), *(Super::GetPawn()->GetName()))
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("AI Pawn Not Found."))
+	}
+	*/
+
+
+}

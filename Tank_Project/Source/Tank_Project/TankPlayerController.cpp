@@ -35,10 +35,18 @@ void ATankPlayerController::Tick(float DeltaTime) {
 	 FVector HitLocation;
 	 if (GetSightRayHitLocation(HitLocation)) {
 		 GetControlledTank()->AimAt(HitLocation);
-		 FVector CurrentLocation = PlayerCameraManager->GetCameraLocation();
+
+		 // LOG OUT THE DISTANCE AWAY IN METERS
+		 /*
+		 FVector CurrentLocation = GetPawn()->GetActorLocation();
 		 FVector Difference = HitLocation - CurrentLocation;
-		 float MetersAway = Difference.Size()/100;
-	//	 UE_LOG(LogTemp, Warning, TEXT("Meters Away: %f"), MetersAway)
+		 float MetersAway = (Difference.Size() / 100);
+		 float KiloMetersAway = (MetersAway / 1000);
+		 float FeetAway = (MetersAway*3.28084);
+		 float MilesAway = (FeetAway*0.000189394);
+		 UE_LOG(LogTemp, Warning, TEXT("Distance Away:| Meters: %f| |Feet: %f| |Miles: %f| |Kilometers: %f "),
+			 MetersAway, FeetAway, MilesAway, KiloMetersAway)
+			 */
 	 }
 
 

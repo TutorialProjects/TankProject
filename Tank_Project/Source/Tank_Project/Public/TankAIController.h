@@ -14,10 +14,10 @@ class TANK_PROJECT_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
 public:
-	APawn* GetControlledPawn() const;
+	ATankPawn* GetControlledTankPawn() const;
 	ATankPawn* GetPlayerTank() const;
 	virtual void BeginPlay() override;
-	
+	void Tick(float DeltaTime);
 	
 	
 };
