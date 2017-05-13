@@ -2,10 +2,11 @@
 
 #pragma once
 
-#include "TankComponentAiming.h"
+// Forward declarations
 #include "GameFramework/Pawn.h"
 #include "TankPawn.generated.h"
-
+class UTankComponentAiming;
+class UTankBarrelMeshComp;
 UCLASS()
 class TANK_PROJECT_API ATankPawn : public APawn
 {
@@ -16,7 +17,7 @@ public:
 	ATankPawn();
 	void AimAt(FVector HitLocation);
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void SetBarrelReference(UTankBarrelMeshComp* BarrelToSet);
 
 protected:
 	UTankComponentAiming* TankAimingComponent = nullptr;
@@ -25,7 +26,6 @@ protected:
 
 private:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

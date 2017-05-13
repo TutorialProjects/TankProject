@@ -2,13 +2,13 @@
 
 #pragma once
 
-#include "Public/TankPawn.h"
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h"
 
 /**
  * 
  */
+class ATankPawn;
 UCLASS()
 class TANK_PROJECT_API ATankPlayerController : public APlayerController
 {
@@ -27,6 +27,6 @@ public:
 	UPROPERTY(EditAnywhere)
 	float CrossHairYLocation = 0.5f;
 	UPROPERTY(EditAnywhere)
-	float LineTraceRange = 500000.f;
+	float LineTraceRange = 1000000.f;
 	
 };

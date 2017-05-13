@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank_Project.h"
+#include "Public/TankPawn.h"
 #include "TankPlayerController.h"
 #define OUT
 
@@ -63,14 +64,14 @@ void ATankPlayerController::Tick(float DeltaTime) {
 	 FVector LookDirection; /*=*/
 	 if (GetLookDirection(ScreenLocation, LookDirection))
 		{
-			GetLookVectorHitLocation(LookDirection, outHitLocation);
+			return GetLookVectorHitLocation(LookDirection, outHitLocation);
 		};
 	 
 	// UE_LOG(LogTemp, Warning, TEXT("WorldDirection: %s"), *LookDirection.ToString());
 	 //line trace by channel
 	 // if hit, set outlocation to the hitcomponent.location, then return true
 	 // if HitResult.HitComponent == false, do nothing and return false
-	 return true;
+	 return false;
  }
  bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation,FVector &outLookDirection) const{
 	 FVector WorldCameraLocation; //to be discarded
@@ -87,9 +88,11 @@ void ATankPlayerController::Tick(float DeltaTime) {
 		 EndLocation,
 		 ECollisionChannel::ECC_Visibility))
 	 {
+		// UE_LOG(LogTemp,Warning,TEXT("The HitResult: %s"), *HitResult.Location.ToString())
 		 outHitLocation = HitResult.Location;
 		 return true;
 	 }
 	 outHitLocation = FVector(0.f); //<- just in case u forget to check
+	// UE_LOG(LogTemp, Warning, TEXT("the check: %s"), *HitResult.Location.ToString())
 	 return false;
  }

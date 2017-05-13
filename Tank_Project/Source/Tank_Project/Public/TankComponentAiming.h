@@ -5,8 +5,9 @@
 #include "Components/ActorComponent.h"
 #include "TankComponentAiming.generated.h"
 
-
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+class UTankBarrelMeshComp;
+//eats shit and dies (and also holds barrel's properties and Elevate method, apparently)
+UCLASS( ClassGroup=(Tank_Pawn), meta=(BlueprintSpawnableComponent) )
 class TANK_PROJECT_API UTankComponentAiming : public UActorComponent
 {
 	GENERATED_BODY()
@@ -14,7 +15,7 @@ class TANK_PROJECT_API UTankComponentAiming : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UTankComponentAiming();
-	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
+	void SetBarrelReference(UTankBarrelMeshComp* BarrelToSet);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -23,7 +24,8 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void AimAt(FVector AimLocation, float LaunchSpeed);
+	void  MoveBarrelTowards(FVector AimDirection);
 private:
-	UStaticMeshComponent* Barrel = nullptr;
+	UTankBarrelMeshComp* Barrel = nullptr;
 	
 };

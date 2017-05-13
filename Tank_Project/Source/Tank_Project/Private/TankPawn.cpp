@@ -1,14 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank_Project.h"
+#include "TankComponentAiming.h"
 #include "TankPawn.h"
-
+#include "TankBarrelMeshComp.h"
 
 // Sets default values
 ATankPawn::ATankPawn()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	TankAimingComponent = CreateDefaultSubobject<UTankComponentAiming>(FName("Aiming Component"));
 
 }
@@ -20,13 +21,6 @@ void ATankPawn::BeginPlay()
 	
 }
 
-// Called every frame
-void ATankPawn::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-//	UE_LOG(LogTemp,Warning,TEXT("%s: Hi Im in the world."),*GetName())
-
-}
 
 // Called to bind functionality to input
 void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -57,6 +51,6 @@ void ATankPawn::AimAt(FVector HitLocation) {
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 	return;
 }
-void ATankPawn::SetBarrelReference(UStaticMeshComponent* BarrelToSet) {
+void ATankPawn::SetBarrelReference(UTankBarrelMeshComp* BarrelToSet) {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
 }
