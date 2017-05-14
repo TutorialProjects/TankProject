@@ -16,10 +16,15 @@ public:
 		void Elevate(float relativeSpeed);
 	
 	UPROPERTY(EditAnywhere, Category = BARREL_PROPERTIES)
-		float MaxDegreesPerSecond = 20;
+		float MaxDegreesPerSecond = 30;
 	UPROPERTY(EditAnywhere, Category = BARREL_PROPERTIES)
-		float MaxEvelvation = 30;
+		float MaxEvelvationClamp = 30;
+		
 	UPROPERTY(EditAnywhere, Category = BARREL_PROPERTIES)
-		float MinEvelvation = -10;
+	float BackMinEvelvationClamp = 0.f;
+	UPROPERTY(EditAnywhere, Category = BARREL_PROPERTIES)
+	float FrontMinEvelvationClamp = -10.f;
+
+	float CurrentMinEvelvationClamp = FrontMinEvelvationClamp;
 	
 };

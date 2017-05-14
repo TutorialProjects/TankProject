@@ -52,6 +52,7 @@ void ATankAIController::Tick(float DeltaTime)
 	if (GetControlledTankPawn() && GetPlayerTank())
 	{
 		GetControlledTankPawn()->AimAt(GetPlayerTank()->GetActorLocation());
+		GetControlledTankPawn()->Fire();
 	}
 
 	/* // this was included as a debug

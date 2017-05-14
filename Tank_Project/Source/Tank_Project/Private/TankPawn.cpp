@@ -2,8 +2,11 @@
 
 #include "Tank_Project.h"
 #include "TankComponentAiming.h"
-#include "TankPawn.h"
 #include "TankBarrelMeshComp.h"
+#include "TankTurret.h"
+#include "Tank_Projectile.h"
+#include "TankPawn.h"
+
 
 // Sets default values
 ATankPawn::ATankPawn()
@@ -51,6 +54,29 @@ void ATankPawn::AimAt(FVector HitLocation) {
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 	return;
 }
+void ATankPawn::Fire() {
+	if (!TankBarrel) { return; }
+	UE_LOG(LogTemp, Warning, TEXT("FIRE!"))
+
+	FVector ProjectileSpawnLoc;
+	FRotator ProjectileSpawnRot;
+	//TankBarrel->GetSocketWorldLocationAndRotation(FName("Muzzle"), ProjectileSpawnLoc, ProjectileSpawnRot);
+	ProjectileSpawnLoc = TankBarrel->GetSocketLocation(FName("Muzzle"));
+	ProjectileSpawnRot = TankBarrel->GetSocketRotation(FName("Muzzle"));
+	//	FTransform ProjectileSpawnTrans = TankBarrel->GetSocketTransform(FName("Muzzle"));
+	//GetWorld()->SpawnActor<>();
+	if (!Tank_Projectile_VersionReference) { return; }
+//	Tank_Projectile_BP->SetInitialSpeed(LaunchSpeed);
+	ATank_Projectile* TankShell = GetWorld()->SpawnActor<ATank_Projectile>(Tank_Projectile_VersionReference, ProjectileSpawnLoc, ProjectileSpawnRot);
+	TankShell->LaunchProjectile(LaunchSpeed);
+
+	return;
+}
 void ATankPawn::SetBarrelReference(UTankBarrelMeshComp* BarrelToSet) {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+	TankBarrel = BarrelToSet;
+
+}
+void ATankPawn::SetTurretReference(UTankTurret* TurretToSet) {
+	TankAimingComponent->SetTurretReference(TurretToSet);
 }
