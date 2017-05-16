@@ -13,7 +13,7 @@ class TANK_PROJECT_API ATank_Projectile : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ATank_Projectile();
-	//UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	UProjectileMovementComponent* MovementComponent;
 	void LaunchProjectile(float speed);
 protected:

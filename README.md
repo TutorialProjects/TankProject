@@ -1,22 +1,10 @@
 # TankProject
 for the tank tutorial on udemy
 
-## Ass Header
-* Penis Cake 1
-* Penis Cake 2
+## Header
+* bullet 1
+* bullet2
 
 ___
 ---
-Anal Sex Line
-penis?
-
-#anal madness
----
-
-##dicks
----
-ass
-shit cock
----
-#sponge
-and herpies was there too
+lines
