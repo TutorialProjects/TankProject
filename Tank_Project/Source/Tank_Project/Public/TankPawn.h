@@ -9,6 +9,7 @@ class UTankComponentAiming;
 class UTankBarrelMeshComp;
 class UTankTurret;
 class ATank_Projectile;
+class UTankMovementComponent;
 UCLASS()
 class TANK_PROJECT_API ATankPawn : public APawn
 {
@@ -37,6 +38,8 @@ public:
 protected:
 	UPROPERTY(EditAnywhere)
 	UTankComponentAiming* TankAimingComponent = nullptr;
+	UPROPERTY(BlueprintReadOnly)
+	UTankMovementComponent* TankMovingComponent = nullptr;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -45,10 +48,13 @@ private:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	UPROPERTY(EditAnywhere, Category = Firing)
+	
+	UPROPERTY(EditAnywhere, Category = FIRING)
 		float LaunchSpeed = 1000.f;
 
+	UPROPERTY(EditDefaultsOnly,Category = FIRING)
+	float ReloadTimeInSeconds = 3;
+	double LastFireTime = 0;
 	
 	
 };

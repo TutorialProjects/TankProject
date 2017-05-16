@@ -1,11 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank_Project.h"
-#include "TankComponentAiming.h"
-#include "TankBarrelMeshComp.h"
-#include "TankTurret.h"
-#include "Tank_Projectile.h"
-#include "TankPawn.h"
+#include "Public/TankComponentAiming.h"
+#include "Public/TankBarrelMeshComp.h"
+#include "Public/TankTurret.h"
+#include "Public/Tank_Projectile.h"
+#include "Public/TankMovementComponent.h"
+#include "Public/TankPawn.h"
 
 
 // Sets default values
@@ -14,6 +15,7 @@ ATankPawn::ATankPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	TankAimingComponent = CreateDefaultSubobject<UTankComponentAiming>(FName("Aiming Component"));
+
 
 }
 
@@ -55,20 +57,24 @@ void ATankPawn::AimAt(FVector HitLocation) {
 	return;
 }
 void ATankPawn::Fire() {
-	if (!TankBarrel) { return; }
-	UE_LOG(LogTemp, Warning, TEXT("FIRE!"))
+	bool isReloaded = ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds);
+	if (TankBarrel && isReloaded)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FIRE!"))
 
-	FVector ProjectileSpawnLoc;
-	FRotator ProjectileSpawnRot;
-	//TankBarrel->GetSocketWorldLocationAndRotation(FName("Muzzle"), ProjectileSpawnLoc, ProjectileSpawnRot);
-	ProjectileSpawnLoc = TankBarrel->GetSocketLocation(FName("Muzzle"));
-	ProjectileSpawnRot = TankBarrel->GetSocketRotation(FName("Muzzle"));
-	//	FTransform ProjectileSpawnTrans = TankBarrel->GetSocketTransform(FName("Muzzle"));
-	//GetWorld()->SpawnActor<>();
-	if (!Tank_Projectile_VersionReference) { return; }
-//	Tank_Projectile_BP->SetInitialSpeed(LaunchSpeed);
-	ATank_Projectile* TankShell = GetWorld()->SpawnActor<ATank_Projectile>(Tank_Projectile_VersionReference, ProjectileSpawnLoc, ProjectileSpawnRot);
-	TankShell->LaunchProjectile(LaunchSpeed);
+			FVector ProjectileSpawnLoc;
+		FRotator ProjectileSpawnRot;
+		//TankBarrel->GetSocketWorldLocationAndRotation(FName("Muzzle"), ProjectileSpawnLoc, ProjectileSpawnRot);
+		ProjectileSpawnLoc = TankBarrel->GetSocketLocation(FName("Muzzle"));
+		ProjectileSpawnRot = TankBarrel->GetSocketRotation(FName("Muzzle"));
+		//	FTransform ProjectileSpawnTrans = TankBarrel->GetSocketTransform(FName("Muzzle"));
+		//GetWorld()->SpawnActor<>();
+		if (!Tank_Projectile_VersionReference) { return; }
+		//	Tank_Projectile_BP->SetInitialSpeed(LaunchSpeed);
+		ATank_Projectile* TankShell = GetWorld()->SpawnActor<ATank_Projectile>(Tank_Projectile_VersionReference, ProjectileSpawnLoc, ProjectileSpawnRot);
+		TankShell->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
 
 	return;
 }
