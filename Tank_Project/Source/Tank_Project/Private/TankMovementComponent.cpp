@@ -36,6 +36,6 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	IntendMoveForward(IntentionDotProduct);
 	float crossZ = IntentionCrossProduct.Z;
 	IntendTurnRight(crossZ);
-	UE_LOG(LogTemp, Warning, TEXT("%s, Cross Product Z: %f"), *GetOwner()->GetName(), crossZ);
+	//UE_LOG(LogTemp, Warning, TEXT("%s, Cross Product Z: %f"), *GetOwner()->GetName(), crossZ);
 
 }

@@ -4,6 +4,15 @@
 
 #include "Components/ActorComponent.h"
 #include "TankComponentAiming.generated.h"
+
+UENUM()
+enum class EFiringStatus : uint8
+{
+	Locked,
+	Aiming,
+	Reloading
+};
+
 class UTankTurret;
 class UTankBarrelMeshComp;
 //eats shit and dies (and also holds barrel's properties and Elevate method, apparently)
@@ -19,9 +28,14 @@ public:
 	void SetTurretReference(UTankTurret* TurretToSet);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool DebugLineOption = false;
+	UPROPERTY(BlueprintReadOnly, Category = "State")
+		EFiringStatus FiringState = EFiringStatus::Aiming;
+	UFUNCTION(BlueprintCallable)
+		void Initialize(UTankBarrelMeshComp* barrelComp, UTankTurret* turretComp);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
 	
 public:	
 	// Called every frame
@@ -29,8 +43,10 @@ public:
 	void AimAt(FVector AimLocation, float LaunchSpeed);
 	void  MoveBarrelTowards(FVector AimDirection);
 	void  MoveTurretTowards(FVector AimDirection);
+	UTankBarrelMeshComp* GetTankBarrel();
 private:
 	UTankBarrelMeshComp* TankBarrel = nullptr;
 	UTankTurret* TankTurret = nullptr;
+	
 	
 };

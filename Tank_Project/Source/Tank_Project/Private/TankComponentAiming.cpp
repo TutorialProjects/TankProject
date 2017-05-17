@@ -93,6 +93,7 @@ void UTankComponentAiming::AimAt(FVector AimLocation, float LaunchSpeed) {
 
 void UTankComponentAiming::MoveBarrelTowards(FVector AimDirection)
 {
+	if (!TankBarrel || !TankTurret) { return; } // <-this protection is unneeded if you dont call it arbitrarily
 	FRotator BarrelRotator = TankBarrel->GetForwardVector().Rotation();
 	FRotator AimRotator = AimDirection.Rotation();
 	FRotator DeltaRot = AimRotator - BarrelRotator;
@@ -104,6 +105,7 @@ void UTankComponentAiming::MoveBarrelTowards(FVector AimDirection)
 
 void UTankComponentAiming::MoveTurretTowards(FVector AimDirection)
 {
+	if (!TankBarrel || !TankTurret) { return; }// <-this protection is unneeded if you dont call it arbitrarily
 	FRotator TurretRotator = TankTurret->GetForwardVector().Rotation();
 	FRotator AimRotator = AimDirection.Rotation();
 	FRotator DeltaRot = AimRotator - TurretRotator;
@@ -113,4 +115,14 @@ void UTankComponentAiming::MoveTurretTowards(FVector AimDirection)
 	TankTurret->Turn(DeltaRot.Yaw);
 	return;
 }
+void UTankComponentAiming::Initialize(UTankBarrelMeshComp* barrelComp, UTankTurret* turretComp)
+{
+	TankBarrel = barrelComp;
+	TankTurret = turretComp;
 
+}
+
+UTankBarrelMeshComp* UTankComponentAiming::GetTankBarrel() {
+
+	return TankBarrel;
+}

@@ -5,7 +5,6 @@
 #include "Public/TankBarrelMeshComp.h"
 #include "Public/TankTurret.h"
 #include "Public/Tank_Projectile.h"
-#include "Public/TankMovementComponent.h"
 #include "Public/TankPawn.h"
 
 
@@ -14,7 +13,9 @@ ATankPawn::ATankPawn()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+	UE_LOG(LogTemp,Warning, TEXT("Tank Pawn C++ Construction script ran"))
 	TankAimingComponent = CreateDefaultSubobject<UTankComponentAiming>(FName("Aiming Component"));
+
 
 
 }
@@ -22,8 +23,15 @@ ATankPawn::ATankPawn()
 // Called when the game starts or when spawned
 void ATankPawn::BeginPlay()
 {
-	Super::BeginPlay();
 	
+	UE_LOG(LogTemp, Warning, TEXT("Tank Pawn C++ Begin Play function called"))
+		Super::BeginPlay();
+	if (TankAimingComponent) {
+		if (TankAimingComponent->GetTankBarrel())
+		{
+			TankBarrel = TankAimingComponent->GetTankBarrel();
+		}
+	}
 }
 
 
@@ -52,13 +60,14 @@ void ATankPawn::AimAt(FVector HitLocation) {
 	float MetersAway = (Difference.Size() / 100);
 	UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s, Distance: %f meters"), *GetName(), *HitLocation.ToString(), MetersAway)
 	*/
-
+	if (!TankAimingComponent) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 	return;
 }
 void ATankPawn::Fire() {
+	if (!ensure(TankBarrel)) { return; }
 	bool isReloaded = ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds);
-	if (TankBarrel && isReloaded)
+	if (isReloaded)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("FIRE!"))
 
@@ -77,12 +86,4 @@ void ATankPawn::Fire() {
 	}
 
 	return;
-}
-void ATankPawn::SetBarrelReference(UTankBarrelMeshComp* BarrelToSet) {
-	TankAimingComponent->SetBarrelReference(BarrelToSet);
-	TankBarrel = BarrelToSet;
-
-}
-void ATankPawn::SetTurretReference(UTankTurret* TurretToSet) {
-	TankAimingComponent->SetTurretReference(TurretToSet);
 }

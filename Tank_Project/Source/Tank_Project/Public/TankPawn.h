@@ -19,16 +19,12 @@ public:
 	// Sets default values for this pawn's properties
 	ATankPawn();
 	void AimAt(FVector HitLocation);
-	UFUNCTION(BlueprintCallable, Category = Tank_Setup)
-	void SetBarrelReference(UTankBarrelMeshComp* BarrelToSet);
 
-	UFUNCTION(BlueprintCallable, Category = Tank_Setup)
-	void SetTurretReference(UTankTurret* TurretToSet);
 
-	UFUNCTION(BlueprintCallable, Category = Tank_Actions)
+	UFUNCTION(BlueprintCallable, Category = "TANK_ACTIONS")
 	void Fire();
 
-	UPROPERTY(EditAnywhere, Category = TANK_SETUP)
+	UPROPERTY(EditAnywhere, Category = "TANK_SETUP")
 		//	UClass* ProjectileBlueprint;
 		TSubclassOf<ATank_Projectile> Tank_Projectile_VersionReference;
 	UTankBarrelMeshComp* TankBarrel;
@@ -36,10 +32,9 @@ public:
 	//AActor shit;
 	//TSubclassOf<AActor> cocks; //https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf/
 protected:
-	UPROPERTY(EditAnywhere)
-	UTankComponentAiming* TankAimingComponent = nullptr;
 	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent* TankMovingComponent = nullptr;
+	UTankComponentAiming* TankAimingComponent = nullptr;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
@@ -49,10 +44,10 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	UPROPERTY(EditAnywhere, Category = FIRING)
+	UPROPERTY(EditAnywhere, Category = "FIRING")
 		float LaunchSpeed = 1000.f;
 
-	UPROPERTY(EditDefaultsOnly,Category = FIRING)
+	UPROPERTY(EditDefaultsOnly,Category = "FIRING")
 	float ReloadTimeInSeconds = 3;
 	double LastFireTime = 0;
 	

@@ -2,6 +2,7 @@
 
 #include "Tank_Project.h"
 #include "Public/TankPawn.h"
+#include "TankComponentAiming.h"
 #include "TankPlayerController.h"
 #define OUT
 
@@ -20,12 +21,12 @@ void ATankPlayerController::Tick(float DeltaTime) {
 
  void ATankPlayerController::BeginPlay() {
 	 Super::BeginPlay();
-	 auto ControlledTank = GetControlledTank();
-	 if (ControlledTank) {
-		 UE_LOG(LogTemp, Warning, TEXT("Player Pawn Name: %s"), *(GetControlledTank()->GetName()))
+	 UTankComponentAiming* AimingComponent = GetControlledTank()->FindComponentByClass< UTankComponentAiming>();
+	 if (!ensure(AimingComponent)) {
+		 FoundAimingComponent(AimingComponent); //fills in the ufunction output params for blueprintimplementable
 	 }
 	 else {
-		 UE_LOG(LogTemp, Warning, TEXT("Player Pawn is not a tank"))
+		 UE_LOG(LogTemp,Warning,TEXT("Player Controller couldnt find an aiming component to send to event trigger (at begin play)"))
 	 }
 
 }

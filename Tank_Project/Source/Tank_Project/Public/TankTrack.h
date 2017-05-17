@@ -15,7 +15,7 @@ class TANK_PROJECT_API UTankTrack : public UStaticMeshComponent
 	
 	
 public:
-	UFUNCTION(BlueprintCallable, Category = Input)
+	UFUNCTION(BlueprintCallable, Category = "INPUT")
 	void SetThrottle(float Throttle);
 	// max force per track, in newtons (penis)
 	UPROPERTY(EditDefaultsOnly)

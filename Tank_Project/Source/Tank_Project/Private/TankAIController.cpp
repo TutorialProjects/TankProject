@@ -18,9 +18,9 @@ void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-		auto PlayerTankPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+		APawn* PlayerTankPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 		PlayerTankPawn = Cast<ATankPawn>(PlayerTankPawn);
-		auto AIPawn = Cast<ATankPawn>(GetPawn());
+		ATankPawn* AIPawn = Cast<ATankPawn>(GetPawn());
 		if (PlayerTankPawn &&AIPawn) {
 			
 			AIPawn->AimAt(PlayerTankPawn->GetActorLocation());
