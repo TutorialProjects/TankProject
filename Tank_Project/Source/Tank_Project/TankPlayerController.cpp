@@ -21,8 +21,8 @@ void ATankPlayerController::Tick(float DeltaTime) {
 
  void ATankPlayerController::BeginPlay() {
 	 Super::BeginPlay();
-	 UTankComponentAiming* AimingComponent = GetControlledTank()->FindComponentByClass< UTankComponentAiming>();
-	 if (!ensure(AimingComponent)) {
+	 UTankComponentAiming* AimingComponent = GetControlledTank()->FindComponentByClass<UTankComponentAiming>();
+	 if (AimingComponent) {
 		 FoundAimingComponent(AimingComponent); //fills in the ufunction output params for blueprintimplementable
 	 }
 	 else {

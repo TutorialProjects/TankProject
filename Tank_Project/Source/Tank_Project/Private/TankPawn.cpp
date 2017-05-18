@@ -5,6 +5,7 @@
 #include "Public/TankBarrelMeshComp.h"
 #include "Public/TankTurret.h"
 #include "Public/Tank_Projectile.h"
+#include "Public/TankMovementComponent.h"
 #include "Public/TankPawn.h"
 
 
@@ -14,7 +15,7 @@ ATankPawn::ATankPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 	UE_LOG(LogTemp,Warning, TEXT("Tank Pawn C++ Construction script ran"))
-	TankAimingComponent = CreateDefaultSubobject<UTankComponentAiming>(FName("Aiming Component"));
+//	TankAimingComponent = CreateDefaultSubobject<UTankComponentAiming>(FName("Aiming Component"));
 
 
 
@@ -26,6 +27,7 @@ void ATankPawn::BeginPlay()
 	
 	UE_LOG(LogTemp, Warning, TEXT("Tank Pawn C++ Begin Play function called"))
 		Super::BeginPlay();
+	TankAimingComponent = FindComponentByClass<UTankComponentAiming>();
 	if (TankAimingComponent) {
 		if (TankAimingComponent->GetTankBarrel())
 		{
