@@ -15,6 +15,7 @@ enum class EFiringStatus : uint8
 
 class UTankTurret;
 class UTankBarrelMeshComp;
+class ATank_Projectile;
 //eats shit and dies (and also holds barrel's properties and Elevate method, apparently)
 UCLASS( ClassGroup=(Tank_Pawn), meta=(BlueprintSpawnableComponent) )
 class TANK_PROJECT_API UTankComponentAiming : public UActorComponent
@@ -29,9 +30,28 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool DebugLineOption = false;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-		EFiringStatus FiringState = EFiringStatus::Aiming;
+	EFiringStatus FiringState = EFiringStatus::Aiming;
 	UFUNCTION(BlueprintCallable)
-		void Initialize(UTankBarrelMeshComp* barrelComp, UTankTurret* turretComp);
+	void Initialize(UTankBarrelMeshComp* barrelComp, UTankTurret* turretComp);
+
+	///////new stuff \/
+	UFUNCTION(BlueprintCallable, Category = "TANK_ACTIONS")
+	void Fire();
+
+	UPROPERTY(EditAnywhere, Category = "TANK_SETUP")
+		//	UClass* ProjectileBlueprint;
+		TSubclassOf<ATank_Projectile> Tank_Projectile_VersionReference;
+
+	UPROPERTY(EditAnywhere, Category = "FIRING")
+		float LaunchSpeed = 4000.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "FIRING")
+		float ReloadTimeInSeconds = 3;
+
+	UTankBarrelMeshComp* TankBarrel = nullptr;
+
+	double LastFireTime = 0;
+	///////
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -41,12 +61,12 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void AimAt(FVector AimLocation);
-	float LaunchSpeed = 100000.f;
+
 	void  MoveBarrelTowards(FVector AimDirection);
 	void  MoveTurretTowards(FVector AimDirection);
 	UTankBarrelMeshComp* GetTankBarrel();
 private:
-	UTankBarrelMeshComp* TankBarrel = nullptr;
+
 	UTankTurret* TankTurret = nullptr;
 	
 	

@@ -3,6 +3,7 @@
 #include "Tank_Project.h"
 #include "TankBarrelMeshComp.h"
 #include "TankTurret.h"
+#include "Tank_Projectile.h"
 #include "TankComponentAiming.h"
 
 
@@ -125,4 +126,27 @@ void UTankComponentAiming::Initialize(UTankBarrelMeshComp* barrelComp, UTankTurr
 UTankBarrelMeshComp* UTankComponentAiming::GetTankBarrel() {
 
 	return TankBarrel;
+}
+
+void UTankComponentAiming::Fire() {
+	if (!ensure(TankBarrel && Tank_Projectile_VersionReference)) { return; }
+	bool isReloaded = ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds);
+	if (isReloaded)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("FIRE!"))
+
+			FVector ProjectileSpawnLoc;
+		FRotator ProjectileSpawnRot;
+		//TankBarrel->GetSocketWorldLocationAndRotation(FName("Muzzle"), ProjectileSpawnLoc, ProjectileSpawnRot);
+		ProjectileSpawnLoc = TankBarrel->GetSocketLocation(FName("Muzzle"));
+		ProjectileSpawnRot = TankBarrel->GetSocketRotation(FName("Muzzle"));
+		//	FTransform ProjectileSpawnTrans = TankBarrel->GetSocketTransform(FName("Muzzle"));
+		//GetWorld()->SpawnActor<>();
+		if (!Tank_Projectile_VersionReference) { return; }
+		//	Tank_Projectile_BP->SetInitialSpeed(LaunchSpeed);
+		ATank_Projectile* TankShell = GetWorld()->SpawnActor<ATank_Projectile>(Tank_Projectile_VersionReference, ProjectileSpawnLoc, ProjectileSpawnRot);
+		TankShell->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
+	}
+
 }
