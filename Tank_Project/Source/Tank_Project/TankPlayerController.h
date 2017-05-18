@@ -8,16 +8,14 @@
 /**
  * 
  */
-class ATankPawn;
-class UTankComponentAiming;
+
 UCLASS()
 class TANK_PROJECT_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 		void Tick(float DeltaTime);
 public:
-	UFUNCTION(BlueprintCallable,Category ="SETUP")
-	ATankPawn* GetControlledTank() const;
+
 	virtual void BeginPlay() override;
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector &) const;

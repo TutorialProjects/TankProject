@@ -5,7 +5,7 @@
 // Forward declarations
 #include "GameFramework/Pawn.h"
 #include "TankPawn.generated.h"
-class UTankComponentAiming;
+//class UTankComponentAiming;
 class UTankBarrelMeshComp;
 class UTankTurret;
 class ATank_Projectile;
@@ -18,8 +18,9 @@ class TANK_PROJECT_API ATankPawn : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATankPawn();
-	void AimAt(FVector HitLocation);
 
+	UPROPERTY(EditAnywhere, Category = "FIRING")
+		float LaunchSpeed = 1000.f;
 
 	UFUNCTION(BlueprintCallable, Category = "TANK_ACTIONS")
 	void Fire();
@@ -32,8 +33,8 @@ public:
 	//AActor shit;
 	//TSubclassOf<AActor> cocks; //https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf/
 protected:
-	UPROPERTY(BlueprintReadOnly)
-	UTankComponentAiming* TankAimingComponent = nullptr;
+//	UPROPERTY(BlueprintReadOnly)
+//	UTankComponentAiming* TankAimingComponent = nullptr;
 	UPROPERTY(BlueprintReadOnly)
 		UTankMovementComponent* TankMovementComponent = nullptr;
 	// Called when the game starts or when spawned
@@ -45,8 +46,7 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	UPROPERTY(EditAnywhere, Category = "FIRING")
-		float LaunchSpeed = 1000.f;
+	
 
 	UPROPERTY(EditDefaultsOnly,Category = "FIRING")
 	float ReloadTimeInSeconds = 3;

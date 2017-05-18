@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank_Project.h"
-#include "Public/TankComponentAiming.h"
+//#include "Public/TankComponentAiming.h"
 #include "Public/TankBarrelMeshComp.h"
 #include "Public/TankTurret.h"
 #include "Public/Tank_Projectile.h"
@@ -27,6 +27,7 @@ void ATankPawn::BeginPlay()
 	
 	UE_LOG(LogTemp, Warning, TEXT("Tank Pawn C++ Begin Play function called"))
 		Super::BeginPlay();
+	/*
 	TankAimingComponent = FindComponentByClass<UTankComponentAiming>();
 	if (TankAimingComponent) {
 		if (TankAimingComponent->GetTankBarrel())
@@ -34,6 +35,7 @@ void ATankPawn::BeginPlay()
 			TankBarrel = TankAimingComponent->GetTankBarrel();
 		}
 	}
+	*/
 }
 
 
@@ -44,7 +46,7 @@ void ATankPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ATankPawn::AimAt(FVector HitLocation) {
+//void ATankPawn::AimAt(FVector HitLocation) {
 	// LOG OUT THE DISTANCE AWAY IN EVERYTHING
 	/*
 	FVector CurrentLocation = GetActorLocation();
@@ -62,10 +64,11 @@ void ATankPawn::AimAt(FVector HitLocation) {
 	float MetersAway = (Difference.Size() / 100);
 	UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s, Distance: %f meters"), *GetName(), *HitLocation.ToString(), MetersAway)
 	*/
-	if (!TankAimingComponent) { return; }
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-	return;
-}
+	//if (!TankAimingComponent) { return; }
+	//TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
+
+//}
+
 void ATankPawn::Fire() {
 	if (!ensure(TankBarrel)) { return; }
 	bool isReloaded = ((FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds);

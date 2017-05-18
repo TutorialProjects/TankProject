@@ -42,7 +42,7 @@ void UTankComponentAiming::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-void UTankComponentAiming::AimAt(FVector AimLocation, float LaunchSpeed) {
+void UTankComponentAiming::AimAt(FVector AimLocation) {
 	//FVector CurrentLocation = GetOwner()->GetActorLocation();
 	if (!TankBarrel || !TankTurret) { return; }
 

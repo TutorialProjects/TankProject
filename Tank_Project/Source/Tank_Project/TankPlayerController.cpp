@@ -1,17 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank_Project.h"
-#include "Public/TankPawn.h"
-#include "TankComponentAiming.h"
 #include "TankPlayerController.h"
-#define OUT
-
-
-
-ATankPawn* ATankPlayerController::GetControlledTank() const {
-
-	return Cast<ATankPawn>(GetPawn());
-}
+#include "TankComponentAiming.h"
 
 void ATankPlayerController::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
@@ -21,22 +12,22 @@ void ATankPlayerController::Tick(float DeltaTime) {
 
  void ATankPlayerController::BeginPlay() {
 	 Super::BeginPlay();
-	 UTankComponentAiming* AimingComponent = GetControlledTank()->FindComponentByClass<UTankComponentAiming>();
-	 if (AimingComponent) {
-		 FoundAimingComponent(AimingComponent); //fills in the ufunction output params for blueprintimplementable
-	 }
-	 else {
-		 UE_LOG(LogTemp,Warning,TEXT("Player Controller couldnt find an aiming component to send to event trigger (at begin play)"))
-	 }
+	//AimingComponent = GetControlledTank()->FindComponentByClass<UTankComponentAiming>();
+	 UTankComponentAiming* AimingComponent = GetPawn()->FindComponentByClass<UTankComponentAiming>();
+	 if (!AimingComponent) { return; }
+	 FoundAimingComponent(AimingComponent); //fills in the ufunction output params for blueprintimplementable
+	 
 
 }
  void ATankPlayerController::AimTowardsCrosshair() {
 
-	 if (!GetControlledTank()) { return; }
+	 auto AimingComponent = GetPawn()->FindComponentByClass<UTankComponentAiming>();
+	 if (!AimingComponent) { return; }
 
 	 FVector HitLocation;
 	 if (GetSightRayHitLocation(HitLocation)) {
-		 GetControlledTank()->AimAt(HitLocation);
+	
+			 AimingComponent->AimAt(HitLocation);	 
 
 		 // LOG OUT THE DISTANCE AWAY IN METERS
 		 /*

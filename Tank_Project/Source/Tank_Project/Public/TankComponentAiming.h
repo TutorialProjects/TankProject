@@ -40,7 +40,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void AimAt(FVector AimLocation, float LaunchSpeed);
+	void AimAt(FVector AimLocation);
+	float LaunchSpeed = 100000.f;
 	void  MoveBarrelTowards(FVector AimDirection);
 	void  MoveTurretTowards(FVector AimDirection);
 	UTankBarrelMeshComp* GetTankBarrel();
