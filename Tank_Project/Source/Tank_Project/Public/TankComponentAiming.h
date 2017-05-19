@@ -30,7 +30,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool DebugLineOption = false;
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringStatus FiringState = EFiringStatus::Aiming;
+	EFiringStatus FiringState = EFiringStatus::Reloading;
 	UFUNCTION(BlueprintCallable)
 	void Initialize(UTankBarrelMeshComp* barrelComp, UTankTurret* turretComp);
 
@@ -58,16 +58,16 @@ protected:
 
 	
 public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void AimAt(FVector AimLocation);
 
+	void AimAt(FVector AimLocation);
+	FVector GlobalAimDirection;
 	void  MoveBarrelTowards(FVector AimDirection);
 	void  MoveTurretTowards(FVector AimDirection);
 	UTankBarrelMeshComp* GetTankBarrel();
 private:
-
+	bool IsBarrelMoving();
 	UTankTurret* TankTurret = nullptr;
-	
+	//called every frame
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 	
 };
