@@ -24,6 +24,11 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "COMPONENTS")
 	URadialForceComponent* ExplosionForce = nullptr;
 
+	UPROPERTY(EditAnywhere)
+	float DestroyDelay = 1.f;
+	UPROPERTY(EditAnywhere)
+	float TankDamage = 50.f;
+
 	void LaunchProjectile(float speed);
 protected:
 	// Called when the game starts or when spawned
@@ -34,7 +39,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	void DestroyProjectile();
 	
 	
 };

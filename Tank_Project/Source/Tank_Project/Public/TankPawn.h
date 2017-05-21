@@ -14,10 +14,15 @@ class TANK_PROJECT_API ATankPawn : public APawn
 public:
 	// Sets default values for this pawn's properties
 	ATankPawn();
+	UPROPERTY(EditAnywhere,Category = "SETUP")
+	float TotalHealth =100;
+	UPROPERTY(VisibleAnywhere, Category = "HEALTH")
+	float CurrentHealth;
+	float DamageToApply;
+	
 
 
-
-
+	virtual float TakeDamage(float DamageAmount,struct FDamageEvent const & DamageEvent,class AController * EventInstigator,AActor * DamageCauser);
 	
 	//TSubclassOf<UProjectileMovementComponent> BallMonkeys2; 
 	//AActor shit;

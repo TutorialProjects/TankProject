@@ -54,13 +54,19 @@ void ATank_Projectile::LaunchProjectile(float speed) {
 }
 
 void ATank_Projectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit) {
-	UE_LOG(LogTemp,Error,TEXT("I'm hit"))
-		if (!LaunchBlast || !ImpactBlast) { return; }
+	UE_LOG(LogTemp,Error,TEXT("%s hit"),*GetName())
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
+	
+	//SetRootComponent(ImpactBlast);
+	//CollisionMesh->DestroyComponent();
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &ATank_Projectile::DestroyProjectile, DestroyDelay, false);
+	
+	UGameplayStatics::ApplyRadialDamage(this, TankDamage,GetActorLocation(),ExplosionForce->Radius,UDamageType::StaticClass(), TArray<AActor*>());
+	//Destroy();
 }
-
 
 
 /*
@@ -68,3 +74,7 @@ void ATank_Projectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Norm
 	// OnActorHit signature
 }
 */
+void ATank_Projectile::DestroyProjectile() {
+	Destroy();
+
+}

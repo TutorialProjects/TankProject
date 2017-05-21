@@ -12,11 +12,17 @@ ATankPawn::ATankPawn()
 	//UE_LOG(LogTemp,Warning, TEXT("Tank Pawn C++ Construction script ran"))
 //	TankAimingComponent = CreateDefaultSubobject<UTankComponentAiming>(FName("Aiming Component"));
 
-
+	CurrentHealth = TotalHealth;
 
 }
 
-
+ float ATankPawn::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) {
+	  DamageToApply = FMath::Clamp(DamageAmount,0.f, CurrentHealth);
+	 CurrentHealth -= DamageToApply;
+	 CurrentHealth = FMath::Clamp(CurrentHealth, 0.f, 100.f);
+	 UE_LOG(LogTemp, Warning, TEXT("Dammage Applied: %f  CurrentHealth: %f"), DamageToApply, CurrentHealth);
+	 return DamageToApply;
+}
 
 
 // Called to bind functionality to input
