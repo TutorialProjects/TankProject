@@ -22,7 +22,12 @@ ATank_Projectile::ATank_Projectile()
 	ImpactBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Impact Blast Effect"));
 	ImpactBlast->AttachToComponent(CollisionMesh, FAttachmentTransformRules::KeepRelativeTransform);
 	ImpactBlast->bAutoActivate = false;
-	OnActorHit.AddDynamic(this, &ATank_Projectile::OnHit);
+
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
+	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	CollisionMesh->OnComponentHit.AddDynamic(this, &ATank_Projectile::OnHit);
+	//OnActorHit.AddDynamic(this, &ATank_Projectile::OnHit);
+	
 //	LaunchBlast->SetupAttachment(CollisionMesh);
 	
 }
@@ -31,6 +36,8 @@ ATank_Projectile::ATank_Projectile()
 void ATank_Projectile::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	//ImpactBlast->OnComponentHit.AddDynamic(this, &ATank_Projectile::OnHit);
 	
 }
 
@@ -46,7 +53,18 @@ void ATank_Projectile::LaunchProjectile(float speed) {
 	MovementComponent->Activate();
 }
 
-void ATank_Projectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
+void ATank_Projectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit) {
+	UE_LOG(LogTemp,Error,TEXT("I'm hit"))
+		if (!LaunchBlast || !ImpactBlast) { return; }
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
+	ExplosionForce->FireImpulse();
 }
+
+
+
+/*
+void ATank_Projectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
+	// OnActorHit signature
+}
+*/

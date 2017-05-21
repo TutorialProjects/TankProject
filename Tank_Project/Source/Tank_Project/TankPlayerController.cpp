@@ -27,7 +27,7 @@ void ATankPlayerController::Tick(float DeltaTime) {
 
 	 FVector HitLocation;
 	 bool bGotHitLocation =GetSightRayHitLocation(HitLocation);
-	 UE_LOG(LogTemp,Warning, TEXT("ASS = %i"), bGotHitLocation)
+
 	 if (bGotHitLocation) {
 	
 			 AimingComponent->AimAt(HitLocation);	 

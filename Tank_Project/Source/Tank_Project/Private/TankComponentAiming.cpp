@@ -26,7 +26,6 @@ void UTankComponentAiming::BeginPlay()
 	CurrentAmmo = MaxAmmo;
 	//Super::BeginPlay();
 	LastFireTime = FPlatformTime::Seconds();
-	UE_LOG(LogTemp, Warning, TEXT("Aiming comp begin play"))
 	// ...
 	
 }
