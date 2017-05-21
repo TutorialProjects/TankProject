@@ -19,6 +19,7 @@ public:
 	void Tick(float DeltaTime);
 
 	//range before stopping AI pathfinding
-	float AcceptanceRadius = 3000.f;
+	UPROPERTY(EditAnywhere, Category ="SETUP")
+	float AcceptanceRadius = 8000.f;
 	
 };

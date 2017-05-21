@@ -8,9 +8,22 @@
 ATank_Projectile::ATank_Projectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = 0;
 	MovementComponent= CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Component"));
 	MovementComponent->bAutoActivate = false;
+
+	CollisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Collision Mesh"));
+	SetRootComponent(CollisionMesh);
+	CollisionMesh->SetNotifyRigidBodyCollision(true);
+
+	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch Blast Effect"));
+	LaunchBlast->AttachToComponent(CollisionMesh, FAttachmentTransformRules::KeepRelativeTransform);
+
+	ImpactBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Impact Blast Effect"));
+	ImpactBlast->AttachToComponent(CollisionMesh, FAttachmentTransformRules::KeepRelativeTransform);
+	ImpactBlast->bAutoActivate = false;
+	OnActorHit.AddDynamic(this, &ATank_Projectile::OnHit);
+//	LaunchBlast->SetupAttachment(CollisionMesh);
 	
 }
 
@@ -33,3 +46,7 @@ void ATank_Projectile::LaunchProjectile(float speed) {
 	MovementComponent->Activate();
 }
 
+void ATank_Projectile::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
+	LaunchBlast->Deactivate();
+	ImpactBlast->Activate();
+}

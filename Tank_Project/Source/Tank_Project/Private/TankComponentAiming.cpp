@@ -12,11 +12,18 @@
 UTankComponentAiming::UTankComponentAiming()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+	CurrentAmmo = MaxAmmo;
+}
+
+EFiringStatus UTankComponentAiming::GetFiringState() const
+{
+	return FiringState;
 }
 
 // Called when the game starts
 void UTankComponentAiming::BeginPlay()
 {
+	CurrentAmmo = MaxAmmo;
 	//Super::BeginPlay();
 	LastFireTime = FPlatformTime::Seconds();
 	UE_LOG(LogTemp, Warning, TEXT("Aiming comp begin play"))
@@ -28,11 +35,14 @@ void UTankComponentAiming::TickComponent(float DeltaTime, enum ELevelTick TickTy
 {
 	//Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 //	UE_LOG(LogTemp, Warning, TEXT("Aiming comp ticking"))
-		if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds) {
+	if (CurrentAmmo <= 0) {
+		FiringState = EFiringStatus::NoAmmo;
+	}
+	else if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds) {
 			FiringState = EFiringStatus::Reloading;
-		}
-		else if (IsBarrelMoving()) { FiringState = EFiringStatus::Locked; }
-		else{ FiringState = EFiringStatus::Aiming; }
+	}
+	else if (IsBarrelMoving()) { FiringState = EFiringStatus::Locked; }
+	else{ FiringState = EFiringStatus::Aiming; }
 }
 
 bool UTankComponentAiming::IsBarrelMoving() {
@@ -112,6 +122,7 @@ void UTankComponentAiming::MoveBarrelTowards(FVector AimDirection)
 	FRotator DeltaRot = AimRotator - BarrelRotator;
 	//UE_LOG(LogTemp, Warning, TEXT("BarrelRot: %s  AimRot: %s"), *BarrelRotator.ToString(), *AimRotator.ToString())
 		// work out difference between current barrel rotatio, and 
+
 	TankBarrel->Elevate(DeltaRot.Pitch);
 	return;
 }
@@ -124,8 +135,9 @@ void UTankComponentAiming::MoveTurretTowards(FVector AimDirection)
 	FRotator DeltaRot = AimRotator - TurretRotator;
 	//UE_LOG(LogTemp, Warning, TEXT("BarrelRot: %s  AimRot: %s"), *BarrelRotator.ToString(), *AimRotator.ToString())
 	// work out difference between current barrel rotatio, and 
-	
-	TankTurret->Turn(DeltaRot.Yaw);
+	if (FMath::Abs(DeltaRot.Yaw) < 180.f) { TankTurret->Turn(DeltaRot.Yaw); }
+	else { TankTurret->Turn(-DeltaRot.Yaw); }
+
 	return;
 }
 void UTankComponentAiming::Initialize(UTankBarrelMeshComp* barrelComp, UTankTurret* turretComp)
@@ -135,6 +147,11 @@ void UTankComponentAiming::Initialize(UTankBarrelMeshComp* barrelComp, UTankTurr
 
 }
 
+int UTankComponentAiming::getCurrentAmmo() const
+{
+	return CurrentAmmo;
+}
+
 UTankBarrelMeshComp* UTankComponentAiming::GetTankBarrel() {
 
 	return TankBarrel;
@@ -142,27 +159,25 @@ UTankBarrelMeshComp* UTankComponentAiming::GetTankBarrel() {
 
 void UTankComponentAiming::Fire() {
 	
-	
-
-	if (FiringState != EFiringStatus::Reloading)
+	if ((FiringState==EFiringStatus::Locked
+		||FiringState==EFiringStatus::Aiming) && CurrentAmmo > 0 )
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("FIRE!"))
 			if (!ensure(TankBarrel)) { return; }
 			if (!ensure(Tank_Projectile_VersionReference)) { return; }
 			FVector ProjectileSpawnLoc;
 		FRotator ProjectileSpawnRot;
-		//TankBarrel->GetSocketWorldLocationAndRotation(FName("Muzzle"), ProjectileSpawnLoc, ProjectileSpawnRot);
+		TankBarrel->GetSocketWorldLocationAndRotation(FName("Muzzle"), ProjectileSpawnLoc, ProjectileSpawnRot);
 		ProjectileSpawnLoc = TankBarrel->GetSocketLocation(FName("Muzzle"));
-		ProjectileSpawnRot = TankBarrel->GetSocketRotation(FName("Muzzle"));
-		//	FTransform ProjectileSpawnTrans = TankBarrel->GetSocketTransform(FName("Muzzle"));
-		//GetWorld()->SpawnActor<>();
-		if (!Tank_Projectile_VersionReference) { return; }
-		//	Tank_Projectile_BP->SetInitialSpeed(LaunchSpeed);
+	ProjectileSpawnRot = TankBarrel->GetSocketRotation(FName("Muzzle"));
+			FTransform ProjectileSpawnTrans = TankBarrel->GetSocketTransform(FName("Muzzle"));
+
 		ATank_Projectile* TankShell = GetWorld()->SpawnActor<ATank_Projectile>(Tank_Projectile_VersionReference, ProjectileSpawnLoc, ProjectileSpawnRot);
 		if (TankShell) { TankShell->LaunchProjectile(LaunchSpeed); }
 		LastFireTime = FPlatformTime::Seconds();
+		CurrentAmmo--;
 	}
-
+	
 }
 
 

@@ -13,13 +13,25 @@ class TANK_PROJECT_API UTankTrack : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 	
-	
 public:
 	UFUNCTION(BlueprintCallable, Category = "INPUT")
 	void SetThrottle(float Throttle);
 	// max force per track, in newtons (penis)
 	UPROPERTY(EditDefaultsOnly)
 	float MaxDrivingForce=400000;
+	void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction);
 
+	void ApplyAntiForce();
+
+
+	UTankTrack();
+	void BeginPlay();
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
+
+	float CurrentThrottle = 0;
 	
+	void DriveTrack();
+
 };

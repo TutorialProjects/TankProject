@@ -10,7 +10,8 @@ enum class EFiringStatus : uint8
 {
 	Locked,
 	Aiming,
-	Reloading
+	Reloading,
+	NoAmmo
 };
 
 class UTankTurret;
@@ -33,6 +34,8 @@ public:
 	EFiringStatus FiringState = EFiringStatus::Reloading;
 	UFUNCTION(BlueprintCallable)
 	void Initialize(UTankBarrelMeshComp* barrelComp, UTankTurret* turretComp);
+	UFUNCTION(BlueprintCallable)
+	int getCurrentAmmo() const;
 
 	///////new stuff \/
 	UFUNCTION(BlueprintCallable, Category = "TANK_ACTIONS")
@@ -41,15 +44,19 @@ public:
 	UPROPERTY(EditAnywhere, Category = "TANK_SETUP")
 		//	UClass* ProjectileBlueprint;
 		TSubclassOf<ATank_Projectile> Tank_Projectile_VersionReference;
+	ATank_Projectile* projectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "FIRING")
 		float LaunchSpeed = 4000.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "FIRING")
+	UPROPERTY(EditAnywhere, Category = "FIRING")
 		float ReloadTimeInSeconds = 3;
+	UPROPERTY(EditAnywhere, Category = "FIRING")
+		int32 MaxAmmo = 69;
+	int32 CurrentAmmo = MaxAmmo;
 
 	UTankBarrelMeshComp* TankBarrel = nullptr;
-
+	EFiringStatus GetFiringState() const;
 	double LastFireTime = 0;
 	///////
 protected:
