@@ -5,13 +5,14 @@
 // Forward declarations
 #include "GameFramework/Pawn.h"
 #include "TankPawn.generated.h"
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
 UCLASS()
 class TANK_PROJECT_API ATankPawn : public APawn
 {
 	GENERATED_BODY()
-
+		
 public:
+	FTankDelegate OnTankDeath;
 	// Sets default values for this pawn's properties
 	ATankPawn();
 	UPROPERTY(EditAnywhere,Category = "SETUP")
@@ -19,8 +20,8 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "HEALTH")
 	float CurrentHealth;
 	float DamageToApply;
-	
-
+	UFUNCTION(BlueprintPure, Category = "HEALTH")
+	float GetHealthPercent();
 
 	virtual float TakeDamage(float DamageAmount,struct FDamageEvent const & DamageEvent,class AController * EventInstigator,AActor * DamageCauser);
 	

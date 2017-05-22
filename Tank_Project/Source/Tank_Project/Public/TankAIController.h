@@ -21,5 +21,9 @@ public:
 	//range before stopping AI pathfinding
 	UPROPERTY(EditAnywhere, Category ="SETUP")
 	float AcceptanceRadius = 8000.f;
+	UFUNCTION()
+	void OnPossessedTankDeath();
+	
+	virtual void SetPawn(APawn* InPawn) override;
 	
 };
