@@ -26,7 +26,13 @@ void ATankAIController::SetPawn(APawn* InPawn)
 	}
 }
 void ATankAIController::OnPossessedTankDeath() {
-	UE_LOG(LogTemp,Warning,TEXT("Deaded 'Em"))
+	UE_LOG(LogTemp, Warning, TEXT("Deaded 'Em"))
+		if (GetPawn()) {
+			GetPawn()->DetachFromControllerPendingDestroy();
+
+			Destroy();
+		}
+	
 
 }
 void ATankAIController::Tick(float DeltaTime)

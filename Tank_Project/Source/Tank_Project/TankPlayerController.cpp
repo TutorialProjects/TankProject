@@ -1,8 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tank_Project.h"
-#include "TankPlayerController.h"
 #include "TankComponentAiming.h"
+#include "TankPawn.h"
+#include "TankPlayerController.h"
+
 
 void ATankPlayerController::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
@@ -20,6 +22,29 @@ void ATankPlayerController::Tick(float DeltaTime) {
 	 
 
 }
+ 
+ void ATankPlayerController::SetPawn(APawn* InPawn)
+ {
+	 Super::SetPawn(InPawn);
+	 if (InPawn)
+	 {
+		 auto PossessedTank = Cast<ATankPawn>(InPawn);
+		 if (!ensure(PossessedTank)) { return; }
+
+		 PossessedTank->OnTankDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossessedTankDeath);
+
+	 }
+ }
+ void ATankPlayerController::OnPossessedTankDeath() {
+	 UE_LOG(LogTemp, Warning, TEXT("He Deaded Me"))
+	//	 if (GetPawn()) {
+		//	 GetPawn()->DetachFromControllerPendingDestroy();
+			// Destroy();
+		// }
+
+
+ }
+ 
  void ATankPlayerController::AimTowardsCrosshair() {
 	 if (!GetPawn()) { return; }
 	 auto AimingComponent = GetPawn()->FindComponentByClass<UTankComponentAiming>();

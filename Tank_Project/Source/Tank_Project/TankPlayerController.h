@@ -21,7 +21,9 @@ public:
 	bool GetSightRayHitLocation(FVector &) const;
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& outLookDirection) const;
 	bool GetLookVectorHitLocation(FVector Direction, FVector &outHitLocation) const;
-
+	virtual void SetPawn(APawn* InPawn) override;
+	UFUNCTION()
+	void OnPossessedTankDeath();
 	UPROPERTY(EditAnywhere)
 	float CrossHairXLocation = 0.5f;
 	UPROPERTY(EditAnywhere)
