@@ -22,7 +22,7 @@ public:
 	float DamageToApply;
 	UFUNCTION(BlueprintPure, Category = "HEALTH")
 	float GetHealthPercent();
-
+	virtual void BeginPlay() override;
 	virtual float TakeDamage(float DamageAmount,struct FDamageEvent const & DamageEvent,class AController * EventInstigator,AActor * DamageCauser);
 	
 	//TSubclassOf<UProjectileMovementComponent> BallMonkeys2; 

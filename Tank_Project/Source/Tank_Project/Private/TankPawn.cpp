@@ -16,15 +16,21 @@ ATankPawn::ATankPawn()
 
 }
 
+void ATankPawn::BeginPlay() {
+	Super::BeginPlay();
+	CurrentHealth = TotalHealth;
+}
+
 float ATankPawn::GetHealthPercent()
 {
+	
 	return (float)CurrentHealth /(float)TotalHealth;
 }
 
 float ATankPawn::TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) {
 	  DamageToApply = FMath::Clamp(DamageAmount,0.f, CurrentHealth);
 	 CurrentHealth -= DamageToApply;
-	 CurrentHealth = FMath::Clamp(CurrentHealth, 0.f, 100.f);
+	 CurrentHealth = FMath::Clamp(CurrentHealth, 0.f, TotalHealth);
 	 UE_LOG(LogTemp, Warning, TEXT("Dammage Applied: %f  CurrentHealth: %f"), DamageToApply, CurrentHealth);
 	 if (CurrentHealth <= 0.f) {
 		 OnTankDeath.Broadcast();

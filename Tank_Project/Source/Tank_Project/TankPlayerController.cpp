@@ -37,10 +37,10 @@ void ATankPlayerController::Tick(float DeltaTime) {
  }
  void ATankPlayerController::OnPossessedTankDeath() {
 	 UE_LOG(LogTemp, Warning, TEXT("He Deaded Me"))
-	//	 if (GetPawn()) {
-		//	 GetPawn()->DetachFromControllerPendingDestroy();
-			// Destroy();
-		// }
+		 if (GetPawn()) {
+			 StartSpectatingOnly();
+		// Destroy();
+		 }
 
 
  }
